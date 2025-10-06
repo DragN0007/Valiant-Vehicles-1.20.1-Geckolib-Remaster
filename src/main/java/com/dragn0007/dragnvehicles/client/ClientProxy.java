@@ -1,0 +1,32 @@
+package com.dragn0007.dragnvehicles.client;
+
+import com.dragn0007.dragnvehicles.common.network.VVPackets;
+import com.dragn0007.dragnvehicles.common.network.packets.VehicleControlPacket;
+import com.dragn0007.dragnvehicles.vehicle.base.AbstractGeckolibVehicle;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
+
+public class ClientProxy {
+
+    public static void controlVehicleLocal(AbstractGeckolibVehicle vehicle) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if(player == null)
+            return;
+
+        float forward = 0;
+        float left = 0;
+
+        if(player.input.left)
+            left++;
+        if(player.input.right)
+            left--;
+
+        if(player.input.up)
+            forward++;
+        if(player.input.down)
+            forward--;
+
+        VVPackets.INSTANCE.sendToServer(new VehicleControlPacket(vehicle.getId(), forward, left));
+    }
+
+}

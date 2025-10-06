@@ -1,0 +1,32 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved, DragN0007"
+
+[[mods]]
+modId="dragnvehicles"
+version="1.20.1-1.4"
+displayName="DragN's Valiant Vehicles"
+logoFile="dv.png"
+authors="DragN0007, EvangeliX"
+description='''
+New cars, trucks, and other vehicles!
+'''
+
+[[dependencies.dragnvehicles]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.dragnvehicles]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1]"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.dragnvehicles]]
+modId="geckolib"
+mandatory=true
+versionRange = "[4.4.4,)"
+ordering="NONE"
+side="BOTH"

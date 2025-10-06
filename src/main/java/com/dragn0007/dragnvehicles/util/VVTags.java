@@ -1,0 +1,24 @@
+package com.dragn0007.dragnvehicles.util;
+
+import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EntityType;
+
+public class VVTags {
+
+
+    public static class Entity_Types {
+        public static final TagKey<EntityType<?>> CANNOT_RIDE_VEHICLE = tag("cannot_ride_vehicle");
+
+        public static TagKey<EntityType<?>> forgeTag(String name) {
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name));
+        }
+        public static TagKey<EntityType<?>> tag(String name) {
+            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(ValiantVehiclesMain.MODID, name));
+        }
+    }
+
+
+}
