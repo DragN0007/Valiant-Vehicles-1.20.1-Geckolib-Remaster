@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "dragnvehicles:car_spawn_egg"
+        "recipe": "dragnvehicles:car"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "dragnvehicles:car_spawn_egg"
+      "dragnvehicles:car"
     ]
   },
   "sends_telemetry_event": false

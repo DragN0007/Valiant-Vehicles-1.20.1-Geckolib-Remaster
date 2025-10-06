@@ -1,6 +1,6 @@
-// 1.20.1	2025-10-06T01:47:21.0975116	Recipes
+// 1.20.1	2025-10-06T02:54:57.4823317	Recipes
+d2785ee0357797049e4cd07012037ae80802a656 data/dragnvehicles/advancements/recipes/misc/car.json
 2f206356008a24da718b7c4ff8ba23caa9180ee8 data/dragnvehicles/advancements/recipes/misc/car_body.json
-d2c06ac498cd27abfda2be39173a8ca09f2c73f3 data/dragnvehicles/advancements/recipes/misc/car_spawn_egg.json
 52163c9bfe0f168586a6551fb3c7e600e955491a data/dragnvehicles/advancements/recipes/misc/classic_body.json
 af6fe14b7b50bba0af0aa7c89139786f71f23813 data/dragnvehicles/advancements/recipes/misc/engine.json
 a52500edd0f3dacc7a4fe9950ab9417fa5e16f40 data/dragnvehicles/advancements/recipes/misc/motorcycle_body.json
@@ -10,8 +10,8 @@ a0bf901ec5582e7c774897d806cb9ee6861af955 data/dragnvehicles/advancements/recipes
 620c33db7153301e60a8d0ad5d5589a0336765e0 data/dragnvehicles/advancements/recipes/misc/suv_body.json
 03144fe0247bec864774e4e7ac6e3195b0de99c9 data/dragnvehicles/advancements/recipes/misc/truck_body.json
 fe29aa9b3a7009d000c36af8da346129a9811bb6 data/dragnvehicles/advancements/recipes/misc/wheel.json
+0cafc678e466185592b9780f4dfae2ff844774a4 data/dragnvehicles/recipes/car.json
 9e55f06ad0866fa2d0338d345b6f0c752a81a7ca data/dragnvehicles/recipes/car_body.json
-a091528b21a802f202a1c1e5b3802db53e10fefb data/dragnvehicles/recipes/car_spawn_egg.json
 2fb334edf969c8a75050a7b20bb154e53a1617a9 data/dragnvehicles/recipes/classic_body.json
 96c9dd22c48840ab5a56747f160a3300524c4d3d data/dragnvehicles/recipes/engine.json
 46d82a400637c8d710ce61dd945e81d9d707cc07 data/dragnvehicles/recipes/motorcycle_body.json
