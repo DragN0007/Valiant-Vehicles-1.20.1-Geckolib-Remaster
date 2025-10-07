@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class AbstractInventoryVehicle extends AbstractVehicle implements ContainerListener {
 
     public SimpleContainer inventory;
-    private LazyOptional<?> itemHandler;
+    protected LazyOptional<?> itemHandler;
 
     public AbstractInventoryVehicle(EntityType<? extends AbstractVehicle> type, Level level, double maxSpeed, double acceleration, float turnRate,
                                     int maxHealth, double wheelWidth, double wheelLength, Vec3[] riders) {
@@ -32,7 +32,7 @@ public abstract class AbstractInventoryVehicle extends AbstractVehicle implement
     }
 
     protected void createInventory() {
-        this.inventory = new SimpleContainer(27);
+        this.inventory = new SimpleContainer(0);
         this.inventory.addListener(this);
         this.itemHandler = LazyOptional.of(() -> new InvWrapper(this.inventory));
     }

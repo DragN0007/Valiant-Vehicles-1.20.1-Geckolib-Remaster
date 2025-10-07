@@ -53,7 +53,7 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
 
     private float targetRotation = 0;
     private float currentRotation = 0;
-    private static final float MAX_TURN = 6f;
+    private static final float MAX_TURN = 7f;
 
     public AbstractVehicle(EntityType<? extends AbstractVehicle> type, Level level, double maxSpeed, double acceleration,
                            float turnRate, int maxHealth, double wheelWidth, double wheelLength, Vec3[] riders) {
@@ -73,21 +73,21 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         float forward = 0;
         float turn = 0;
 
-        this.currentRotation = this.targetRotation;
-        if(Math.abs(this.targetRotation + turn) <= MAX_TURN) {
-            this.targetRotation += turn;
-        }
-
         if(input.left) {
-            turn = -turnRate;
+            turn = turnRate;
         }
 
         if(input.right) {
-            turn = turnRate;
+            turn = -turnRate;
         }
 
         if(forward != 0 && turn == 0) {
             this.targetRotation = 0;
+        }
+
+        this.currentRotation = this.targetRotation;
+        if(Math.abs(this.targetRotation + turn) <= MAX_TURN) {
+            this.targetRotation += turn;
         }
 
         float deg = this.currentRotation + this.getYRot();

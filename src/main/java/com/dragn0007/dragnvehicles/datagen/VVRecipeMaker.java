@@ -31,46 +31,46 @@ public class VVRecipeMaker extends RecipeProvider implements IConditionBuilder {
                         .of(VVItems.CAR_BODY.get()).build()))
                 .save(pFinishedRecipeConsumer);
 
-//        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.CLASSIC_SPAWN_EGG.get())
-//                .define('A', VVItems.CLASSIC_BODY.get())
-//                .define('B', VVItems.WHEEL.get())
-//                .pattern(" A ")
-//                .pattern("B B")
-//                .pattern("B B")
-//                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
-//                        .of(VVItems.CLASSIC_BODY.get()).build()))
-//                .save(pFinishedRecipeConsumer);
-//
-//        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.TRUCK_SPAWN_EGG.get())
-//                .define('A', VVItems.TRUCK_BODY.get())
-//                .define('B', VVItems.WHEEL.get())
-//                .pattern(" A ")
-//                .pattern("B B")
-//                .pattern("B B")
-//                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
-//                        .of(VVItems.TRUCK_BODY.get()).build()))
-//                .save(pFinishedRecipeConsumer);
-//
-//        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.SUV_SPAWN_EGG.get())
-//                .define('A', VVItems.SUV_BODY.get())
-//                .define('B', VVItems.WHEEL.get())
-//                .pattern(" A ")
-//                .pattern("B B")
-//                .pattern("B B")
-//                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
-//                        .of(VVItems.SUV_BODY.get()).build()))
-//                .save(pFinishedRecipeConsumer);
-//
-//        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.SPORT_CAR_SPAWN_EGG.get())
-//                .define('A', VVItems.SPORT_CAR_BODY.get())
-//                .define('B', VVItems.WHEEL.get())
-//                .pattern(" A ")
-//                .pattern("B B")
-//                .pattern("B B")
-//                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
-//                        .of(VVItems.SPORT_CAR_BODY.get()).build()))
-//                .save(pFinishedRecipeConsumer);
-//
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.CLASSIC_SPAWN_EGG.get())
+                .define('A', VVItems.CLASSIC_BODY.get())
+                .define('B', VVItems.WHEEL.get())
+                .pattern(" A ")
+                .pattern("B B")
+                .pattern("B B")
+                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(VVItems.CLASSIC_BODY.get()).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.TRUCK_SPAWN_EGG.get())
+                .define('A', VVItems.TRUCK_BODY.get())
+                .define('B', VVItems.WHEEL.get())
+                .pattern(" A ")
+                .pattern("B B")
+                .pattern("B B")
+                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(VVItems.TRUCK_BODY.get()).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.SUV_SPAWN_EGG.get())
+                .define('A', VVItems.SUV_BODY.get())
+                .define('B', VVItems.WHEEL.get())
+                .pattern(" A ")
+                .pattern("B B")
+                .pattern("B B")
+                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(VVItems.SUV_BODY.get()).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.SPORTCAR_SPAWN_EGG.get())
+                .define('A', VVItems.SPORT_CAR_BODY.get())
+                .define('B', VVItems.WHEEL.get())
+                .pattern(" A ")
+                .pattern("B B")
+                .pattern("B B")
+                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(VVItems.SPORT_CAR_BODY.get()).build()))
+                .save(pFinishedRecipeConsumer);
+
 //        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.MOTORCYCLE_SPAWN_EGG.get())
 //                .define('A', VVItems.MOTORCYCLE_BODY.get())
 //                .define('B', VVItems.SPORTS_WHEEL.get())

@@ -21,11 +21,11 @@ public class CreativeTabModifier {
     public static void buildContents(BuildCreativeModeTabContentsEvent event) {
            if(event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
                event.accept(VVItems.CAR_SPAWN_EGG);
-//               event.accept(VVItems.CLASSIC_SPAWN_EGG);
+               event.accept(VVItems.CLASSIC_SPAWN_EGG);
+               event.accept(VVItems.SPORTCAR_SPAWN_EGG);
+               event.accept(VVItems.SUV_SPAWN_EGG);
+               event.accept(VVItems.TRUCK_SPAWN_EGG);
 //               event.accept(VVItems.MOTORCYCLE_SPAWN_EGG);
-//               event.accept(VVItems.SPORT_CAR_SPAWN_EGG);
-//               event.accept(VVItems.SUV_SPAWN_EGG);
-//               event.accept(VVItems.TRUCK_SPAWN_EGG);
 
                event.accept(VVItems.CAR_BODY);
                event.accept(VVItems.CLASSIC_BODY);

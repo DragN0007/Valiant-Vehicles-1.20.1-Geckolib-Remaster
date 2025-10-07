@@ -1,6 +1,7 @@
-package com.dragn0007.dragnvehicles.client;
+package com.dragn0007.dragnvehicles.client.model;
 
 import com.dragn0007.dragnvehicles.vehicle.Car;
+import com.dragn0007.dragnvehicles.vehicle.SUV;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -11,21 +12,21 @@ import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class CarRenderer<T extends Car> extends GeoEntityRenderer<T> {
+public class SUVRenderer<T extends SUV> extends GeoEntityRenderer<T> {
 
-    public CarRenderer(Context renderManager, String id) {
-    super(renderManager, new CarModel<>());
+    public SUVRenderer(Context renderManager, String id) {
+    super(renderManager, new SUVModel<>());
     }
 
     @Override
-    public void preRender(PoseStack pose, T wagon, BakedGeoModel model, MultiBufferSource bufferSource,
+    public void preRender(PoseStack pose, T animatable, BakedGeoModel model, MultiBufferSource bufferSource,
                           VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay,
                           float red, float green, float blue, float alpha) {
 
-        float pitch = wagon.getXRot(partialTick);
-        float yaw = -Mth.rotLerp(partialTick, wagon.yRotO, wagon.getYRot());
+        float pitch = animatable.getXRot(partialTick);
+        float yaw = -Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot());
 
-        double wLength = wagon.getLength();
+        double wLength = animatable.getLength();
 
         Vec3 mid = new Vec3(0, 0, pitch < 0 ? -wLength : wLength); // Pivot point is different for positive vs negative rotation.
 
@@ -34,7 +35,7 @@ public class CarRenderer<T extends Car> extends GeoEntityRenderer<T> {
         pose.mulPose(Axis.XP.rotationDegrees(pitch));
         pose.translate(mid.x, 0, mid.z);
 
-        super.preRender(pose, wagon, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(pose, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
     }
 
 }

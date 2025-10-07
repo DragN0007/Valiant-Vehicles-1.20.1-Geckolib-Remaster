@@ -1,5 +1,6 @@
 package com.dragn0007.dragnvehicles.vehicle;
 
+import com.dragn0007.dragnvehicles.client.model.PickupRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -18,23 +19,27 @@ public class VehicleRegistry {
                     .sized(2.5f, 1.9f)
                     .build(new ResourceLocation(MODID, "car").toString()));
 
-//    public static final RegistryObject<EntityType<Classic>> CLASSIC = ENTITY_TYPES.register("classic",
-//            () -> EntityType.Builder.of(Classic::new, MobCategory.MISC).sized(3f, 2.5f).build
-//                    (new ResourceLocation(ValiantVehiclesMain.MODID, "classic").toString()));
-//
-//    public static final RegistryObject<EntityType<Truck>> TRUCK = ENTITY_TYPES.register("truck",
-//            () -> EntityType.Builder.of(Truck::new, MobCategory.MISC).sized(3f, 2.5f).build
-//                    (new ResourceLocation(ValiantVehiclesMain.MODID, "truck").toString()));
-//
-//    public static final RegistryObject<EntityType<SUV>> SUV = ENTITY_TYPES.register("suv",
-//            () -> EntityType.Builder.of(SUV::new, MobCategory.MISC).sized(3f, 2.5f).build
-//                    (new ResourceLocation(ValiantVehiclesMain.MODID, "suv").toString()));
-//
-//    public static final RegistryObject<EntityType<SportCar>> SPORT_CAR = ENTITY_TYPES.register("sport_car",
-//            () -> EntityType.Builder.of(SportCar::new, MobCategory.MISC).sized(3f, 2.2f).build
-//                    (new ResourceLocation(ValiantVehiclesMain.MODID, "sport_car").toString()));
-//
-//    public static final RegistryObject<EntityType<Motorcycle>> MOTORCYCLE = ENTITY_TYPES.register("motorcycle",
-//            () -> EntityType.Builder.of(Motorcycle::new, MobCategory.MISC).sized(1f, 2f).build
-//                    (new ResourceLocation(ValiantVehiclesMain.MODID, "motorcycle").toString()));
+    public static final RegistryObject<EntityType<Classic>> CLASSIC = ENTITY_TYPES.register("classic",
+            () -> EntityType.Builder.of(Classic::new,
+                            MobCategory.MISC)
+                    .sized(2.5f, 1.6f)
+                    .build(new ResourceLocation(MODID, "classic").toString()));
+
+    public static final RegistryObject<EntityType<Pickup>> TRUCK = ENTITY_TYPES.register("truck",
+            () -> EntityType.Builder.of(Pickup::new,
+                            MobCategory.MISC)
+                    .sized(2.5f, 2.2f)
+                    .build(new ResourceLocation(MODID, "truck").toString()));
+
+    public static final RegistryObject<EntityType<SUV>> SUV = ENTITY_TYPES.register("suv",
+            () -> EntityType.Builder.of(SUV::new,
+                            MobCategory.MISC)
+                    .sized(2.5f, 2.2f)
+                    .build(new ResourceLocation(MODID, "suv").toString()));
+
+    public static final RegistryObject<EntityType<Sportcar>> SPORT_CAR = ENTITY_TYPES.register("sport_car",
+            () -> EntityType.Builder.of(Sportcar::new,
+                            MobCategory.MISC)
+                    .sized(2.5f, 1.6f)
+                    .build(new ResourceLocation(MODID, "sport_car").toString()));
 }

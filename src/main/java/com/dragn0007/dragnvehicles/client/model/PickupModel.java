@@ -1,4 +1,4 @@
-package com.dragn0007.dragnvehicles.client;
+package com.dragn0007.dragnvehicles.client.model;
 
 import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
 import com.dragn0007.dragnvehicles.vehicle.base.AbstractVehicle;
@@ -7,15 +7,15 @@ import software.bernie.geckolib.core.animation.AnimationProcessor;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
-public class CarModel<T extends AbstractVehicle> extends DefaultedEntityGeoModel<T> {
+public class PickupModel<T extends AbstractVehicle> extends DefaultedEntityGeoModel<T> {
 
-    public CarModel() {
-        super(new ResourceLocation(ValiantVehiclesMain.MODID, "car"), false);
+    public PickupModel() {
+        super(new ResourceLocation(ValiantVehiclesMain.MODID, "pickup"), false);
     }
 
     @Override
     public ResourceLocation getTextureResource(T animatable) {
-        return ValiantVehiclesMain.id("textures/entity/car/" + animatable.getColor().toString().toLowerCase() + ".png");
+        return ValiantVehiclesMain.id("textures/entity/pickup/" + animatable.getColor().toString().toLowerCase() + ".png");
     }
 
     @Override
