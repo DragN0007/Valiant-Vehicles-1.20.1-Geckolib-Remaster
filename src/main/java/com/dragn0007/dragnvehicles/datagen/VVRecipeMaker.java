@@ -71,14 +71,14 @@ public class VVRecipeMaker extends RecipeProvider implements IConditionBuilder {
                         .of(VVItems.SPORT_CAR_BODY.get()).build()))
                 .save(pFinishedRecipeConsumer);
 
-//        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.MOTORCYCLE_SPAWN_EGG.get())
-//                .define('A', VVItems.MOTORCYCLE_BODY.get())
-//                .define('B', VVItems.SPORTS_WHEEL.get())
-//                .pattern(" A ")
-//                .pattern("B B")
-//                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
-//                        .of(VVItems.MOTORCYCLE_BODY.get()).build()))
-//                .save(pFinishedRecipeConsumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.MOTORCYCLE_SPAWN_EGG.get())
+                .define('A', VVItems.MOTORCYCLE_BODY.get())
+                .define('B', VVItems.SPORTS_WHEEL.get())
+                .pattern(" A ")
+                .pattern("B B")
+                .unlockedBy("has_body", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(VVItems.MOTORCYCLE_BODY.get()).build()))
+                .save(pFinishedRecipeConsumer);
 
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.WHEEL.get())

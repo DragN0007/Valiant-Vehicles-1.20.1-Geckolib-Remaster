@@ -1,6 +1,6 @@
-package com.dragn0007.dragnvehicles.vehicle;
+package com.dragn0007.dragnvehicles;
 
-import com.dragn0007.dragnvehicles.client.model.PickupRenderer;
+import com.dragn0007.dragnvehicles.vehicle.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -31,7 +31,7 @@ public class VehicleRegistry {
                     .sized(2.5f, 2.2f)
                     .build(new ResourceLocation(MODID, "truck").toString()));
 
-    public static final RegistryObject<EntityType<SUV>> SUV = ENTITY_TYPES.register("suv",
+    public static final RegistryObject<EntityType<com.dragn0007.dragnvehicles.vehicle.SUV>> SUV = ENTITY_TYPES.register("suv",
             () -> EntityType.Builder.of(SUV::new,
                             MobCategory.MISC)
                     .sized(2.5f, 2.2f)
@@ -42,4 +42,10 @@ public class VehicleRegistry {
                             MobCategory.MISC)
                     .sized(2.5f, 1.6f)
                     .build(new ResourceLocation(MODID, "sport_car").toString()));
+
+    public static final RegistryObject<EntityType<Motorcycle>> MOTORCYCLE = ENTITY_TYPES.register("motorcycle",
+            () -> EntityType.Builder.of(Motorcycle::new,
+                            MobCategory.MISC)
+                    .sized(0.8f, 1.2f)
+                    .build(new ResourceLocation(MODID, "motorcycle").toString()));
 }

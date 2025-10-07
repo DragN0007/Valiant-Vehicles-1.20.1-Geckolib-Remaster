@@ -3,7 +3,6 @@ package com.dragn0007.dragnvehicles;
 import com.dragn0007.dragnvehicles.common.network.VVPackets;
 import com.dragn0007.dragnvehicles.item.VVItems;
 import com.dragn0007.dragnvehicles.util.ValiantVehiclesCommonConfig;
-import com.dragn0007.dragnvehicles.vehicle.VehicleRegistry;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
