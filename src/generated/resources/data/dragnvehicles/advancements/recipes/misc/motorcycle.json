@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_body": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "dragnvehicles:motorcycle_body"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "dragnvehicles:motorcycle"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_body",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dragnvehicles:motorcycle"
+    ]
+  },
+  "sends_telemetry_event": false
+}

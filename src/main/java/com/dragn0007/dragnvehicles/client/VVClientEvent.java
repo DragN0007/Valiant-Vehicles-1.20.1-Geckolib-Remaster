@@ -1,8 +1,8 @@
 package com.dragn0007.dragnvehicles.client;
 
 import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
-import com.dragn0007.dragnvehicles.client.model.*;
 import com.dragn0007.dragnvehicles.VehicleRegistry;
+import com.dragn0007.dragnvehicles.client.model.*;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

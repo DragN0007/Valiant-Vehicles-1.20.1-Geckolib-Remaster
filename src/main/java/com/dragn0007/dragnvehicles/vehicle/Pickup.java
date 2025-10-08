@@ -12,7 +12,6 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -58,10 +57,12 @@ public class Pickup extends AbstractInventoryVehicle implements ContainerListene
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         Item item = stack.getItem();
-        if(player.isShiftKeyDown() && !(item instanceof DyeItem)) {
-            if (!this.level().isClientSide) {
-                NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
-                        ChestMenu.sixRows(containerId, inventory, this.inventory), this.getDisplayName()));
+        if(player.isShiftKeyDown() && !(item instanceof DyeItem) && (item != VVItems.CAR_KEY.get())) {
+            if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
+                if (!this.level().isClientSide) {
+                    NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
+                            ChestMenu.sixRows(containerId, inventory, this.inventory), this.getDisplayName()));
+                }
             }
         }
         return super.interact(player, hand);

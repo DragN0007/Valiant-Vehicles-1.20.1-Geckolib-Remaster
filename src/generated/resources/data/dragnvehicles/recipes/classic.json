@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "dragnvehicles:classic_body"
+    },
+    "B": {
+      "item": "dragnvehicles:wheel"
+    }
+  },
+  "pattern": [
+    " A ",
+    "B B",
+    "B B"
+  ],
+  "result": {
+    "item": "dragnvehicles:classic"
+  },
+  "show_notification": true
+}

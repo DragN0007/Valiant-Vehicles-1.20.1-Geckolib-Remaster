@@ -94,19 +94,19 @@ public abstract class AbstractGeckolibVehicle extends Entity implements GeoEntit
         callback.accept(passenger, getX() + local.x, getY() + local.y, getZ() + local.z);
     }
 
-    @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
-        if(player.getVehicle() != this) {
-            if(!level().isClientSide) {
-                player.setYRot(getYRot());
-                player.setXRot(getXRot());
-
-                return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
-            }
-            return InteractionResult.sidedSuccess(!level().isClientSide);
-        }
-        return InteractionResult.PASS;
-    }
+//    @Override
+//    public InteractionResult interact(Player player, InteractionHand hand) {
+//        if(player.getVehicle() != this) {
+//            if(!level().isClientSide) {
+//                player.setYRot(getYRot());
+//                player.setXRot(getXRot());
+//
+//                return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
+//            }
+//            return InteractionResult.sidedSuccess(!level().isClientSide);
+//        }
+//        return InteractionResult.PASS;
+//    }
 
     /**
      * @return The tilt of the id (in degrees) based on rays cast under each wheel.

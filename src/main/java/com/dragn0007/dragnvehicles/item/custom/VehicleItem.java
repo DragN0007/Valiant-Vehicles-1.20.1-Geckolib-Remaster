@@ -9,6 +9,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -40,12 +41,12 @@ public class VehicleItem extends Item {
         AbstractVehicle vehicle = entityType.get().create(level);
         vehicle.setPos(Vec3.atBottomCenterOf(context.getClickedPos().above()).add(0, 0.05D, 0));
         vehicle.setYRot(context.getPlayer().getYHeadRot());
-        vehicle.owner = context.getPlayer().getUUID();
 
         CompoundTag nbt = context.getItemInHand().getTag();
         if(nbt != null && nbt.contains("color"))
             nbt.putByte("color", (byte)vehicle.getColor().getId());
 
+        vehicle.setOwner(context.getPlayer().getUUID());
         vehicle.setColor(DyeColor.WHITE);
         level.addFreshEntity(vehicle);
 

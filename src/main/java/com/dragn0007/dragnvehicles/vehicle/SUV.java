@@ -60,10 +60,12 @@ public class SUV extends AbstractInventoryVehicle implements ContainerListener {
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         Item item = stack.getItem();
-        if(player.isShiftKeyDown() && !(item instanceof DyeItem)) {
-            if (!this.level().isClientSide) {
-                NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
-                        new ChestMenu(MenuType.GENERIC_9x4, containerId, inventory, this.inventory, 4), this.getDisplayName()));
+        if(player.isShiftKeyDown() && !(item instanceof DyeItem) && (item != VVItems.CAR_KEY.get())) {
+            if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
+                if (!this.level().isClientSide) {
+                    NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
+                            new ChestMenu(MenuType.GENERIC_9x4, containerId, inventory, this.inventory, 4), this.getDisplayName()));
+                }
             }
         }
         return super.interact(player, hand);

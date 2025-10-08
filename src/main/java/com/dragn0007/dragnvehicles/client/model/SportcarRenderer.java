@@ -1,6 +1,5 @@
 package com.dragn0007.dragnvehicles.client.model;
 
-import com.dragn0007.dragnvehicles.vehicle.Car;
 import com.dragn0007.dragnvehicles.vehicle.Sportcar;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

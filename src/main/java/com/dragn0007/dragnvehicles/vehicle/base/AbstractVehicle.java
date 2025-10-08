@@ -1,6 +1,8 @@
 package com.dragn0007.dragnvehicles.vehicle.base;
 
+import com.dragn0007.dragnvehicles.item.VVItems;
 import com.dragn0007.dragnvehicles.util.VVTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -8,10 +10,12 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.EntityTypeTags;
@@ -34,6 +38,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import javax.annotation.Nullable;
+import java.util.Optional;
+import java.util.Random;
 import java.util.UUID;
 
 public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
@@ -41,6 +48,7 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
     protected static final EntityDataAccessor<Float> DATA_HEALTH = SynchedEntityData.defineId(AbstractVehicle.class, EntityDataSerializers.FLOAT);
     protected static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(AbstractVehicle.class, EntityDataSerializers.INT);
 
+    protected static final Random RANDOM = new Random();
     protected static final double GRAVITY = 0.04D;
 
     protected final double maxSpeed;
@@ -106,7 +114,9 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         if (!this.level().isClientSide) {
         } else {
             if(this.getControllingPassenger() instanceof LocalPlayer player) {
-                this.handleInput(player.input);
+                if ((this.isLocked() && this.owner.equals(player.getUUID())) || (!this.isLocked())) {
+                    this.handleInput(player.input);
+                }
             }
         }
     }
@@ -161,23 +171,35 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         ItemStack stack = player.getItemInHand(hand);
         Item item = stack.getItem();
 
-        if (item instanceof DyeItem) {
-            if(isClientSide)
-                return InteractionResult.SUCCESS;
-            DyeItem dyeitem = (DyeItem) item;
-            DyeColor dyecolor = dyeitem.getDyeColor();
-            if (dyecolor != this.getColor()) {
-                this.setColor(dyecolor);
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
+        if (stack.is(VVItems.CAR_KEY.get()) && player.isShiftKeyDown() && this.getOwner().equals(player.getUUID())) {
+            if (!this.isLocked()) {
+                this.setLocked(true);
+                player.displayClientMessage(Component.translatable("Locked").withStyle(ChatFormatting.GOLD), true);
+            } else {
+                this.setLocked(false);
+                player.displayClientMessage(Component.translatable("Unlocked").withStyle(ChatFormatting.GOLD), true);
+            }
+        }
+
+        if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
+            if (item instanceof DyeItem) {
+                if (isClientSide)
+                    return InteractionResult.SUCCESS;
+                DyeItem dyeitem = (DyeItem) item;
+                DyeColor dyecolor = dyeitem.getDyeColor();
+                if (dyecolor != this.getColor()) {
+                    this.setColor(dyecolor);
+                    if (!player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
+
+                    return InteractionResult.SUCCESS;
                 }
 
-                return InteractionResult.SUCCESS;
-            }
-
-            if (!player.getAbilities().instabuild) {
-                stack.shrink(1);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+                }
             }
         }
 
@@ -201,6 +223,18 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
                 }
                 return InteractionResult.CONSUME;
             }
+        }
+
+        if(player.getVehicle() != this) {
+            if(!level().isClientSide) {
+                player.setYRot(getYRot());
+                player.setXRot(getXRot());
+
+                if ((this.getOwner() != null && this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
+                    return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
+                }
+            }
+            return InteractionResult.sidedSuccess(!level().isClientSide);
         }
 
         return super.interact(player, hand);
@@ -276,8 +310,16 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
             this.markHurt();
             this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
 
-            if(getHealth() <= 0) {
-                onDestroyed(true);
+            if (source.getEntity() instanceof Player player) {
+                if (this.getOwner().equals(player.getUUID())) {
+                    if (getHealth() <= 0) {
+                        onDestroyed(true);
+                    }
+                } else {
+                    if (getHealth() <= 0) {
+                        onDestroyed(false);
+                    }
+                }
             }
 
             return true;
@@ -303,7 +345,20 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
             ItemStack pickResult = getPickResult();
             if(pickResult != null)
                 spawnAtLocation(pickResult);
+        } else {
+            spawnAtLocation(new ItemStack(Items.IRON_INGOT, RANDOM.nextInt(10)));
+            spawnAtLocation(new ItemStack(Items.GLASS, RANDOM.nextInt(3)));
         }
+    }
+
+    private static final EntityDataAccessor<Optional<UUID>> DATA_OWNER = SynchedEntityData.defineId(AbstractVehicle.class, EntityDataSerializers.OPTIONAL_UUID);
+    @Nullable
+    public UUID getOwner() {
+        return this.owner;
+    }
+
+    public void setOwner(@Nullable UUID pUuid) {
+        this.owner = pUuid;
     }
 
     public static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(AbstractVehicle.class, EntityDataSerializers.INT);
@@ -314,21 +369,47 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         this.entityData.set(DATA_COLOR, p_30398_.getId());
     }
 
+    public static final EntityDataAccessor<Boolean> LOCKED = SynchedEntityData.defineId(AbstractVehicle.class, EntityDataSerializers.BOOLEAN);
+    public boolean isLocked() {
+        return this.entityData.get(LOCKED);
+    }
+    public void setLocked(boolean locked) {
+        this.entityData.set(LOCKED, locked);
+    }
+
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
-        if(owner != null)
-            tag.putUUID("owner", owner);
+        if (this.getOwner() != null) {
+            tag.putUUID("owner", this.getOwner());
+        }
 
         ListTag animals = new ListTag();
 
         tag.put("animals", animals);
         tag.putByte("color", (byte)this.getColor().getId());
+        tag.putBoolean("locked", this.isLocked());
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         if (tag.contains("color", 99)) {
             this.setColor(DyeColor.byId(tag.getInt("color")));
+        }
+
+        UUID uuid;
+        if (tag.hasUUID("owner")) {
+            uuid = tag.getUUID("owner");
+        } else {
+            String s = tag.getString("owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
+        }
+
+        if (uuid != null) {
+            this.setOwner(uuid);
+        }
+
+        if (tag.contains("locked")) {
+            this.setLocked(tag.getBoolean("locked"));
         }
     }
 
@@ -345,6 +426,8 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         entityData.define(DATA_TYPE, 0);
         entityData.define(DATA_HEALTH, (float)maxHealth);
         this.entityData.define(DATA_COLOR, DyeColor.WHITE.getId());
+        this.entityData.define(DATA_OWNER, Optional.empty());
+        this.entityData.define(LOCKED, false);
     }
 
     @Override

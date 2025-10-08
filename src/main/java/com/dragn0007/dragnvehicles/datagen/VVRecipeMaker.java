@@ -81,6 +81,16 @@ public class VVRecipeMaker extends RecipeProvider implements IConditionBuilder {
                 .save(pFinishedRecipeConsumer);
 
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.CAR_KEY.get())
+                .define('A', Items.IRON_NUGGET)
+                .define('B', Items.BLACK_DYE)
+                .pattern("A  ")
+                .pattern(" AB")
+                .pattern(" BB")
+                .unlockedBy("has_iron", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.IRON_NUGGET).build()))
+                .save(pFinishedRecipeConsumer);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.WHEEL.get())
                 .define('A', Items.DRIED_KELP_BLOCK)
                 .define('B', Items.IRON_INGOT)

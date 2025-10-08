@@ -17,6 +17,7 @@ public class VVItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
+        simpleItem(VVItems.CAR_KEY);
         simpleItem(VVItems.CAR_BODY);
         simpleItem(VVItems.CLASSIC_BODY);
         simpleItem(VVItems.TRUCK_BODY);

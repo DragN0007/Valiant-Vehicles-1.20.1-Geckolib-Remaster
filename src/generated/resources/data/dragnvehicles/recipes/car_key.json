@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_nugget"
+    },
+    "B": {
+      "item": "minecraft:black_dye"
+    }
+  },
+  "pattern": [
+    "A  ",
+    " AB",
+    " BB"
+  ],
+  "result": {
+    "item": "dragnvehicles:car_key"
+  },
+  "show_notification": true
+}
