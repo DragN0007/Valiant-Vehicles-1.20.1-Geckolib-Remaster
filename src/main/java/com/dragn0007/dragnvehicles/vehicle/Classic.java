@@ -60,11 +60,11 @@ public class Classic extends AbstractInventoryVehicle implements ContainerListen
         ItemStack stack = player.getItemInHand(hand);
         Item item = stack.getItem();
         if(player.isShiftKeyDown() && !(item instanceof DyeItem) && (item != VVItems.CAR_KEY.get())) {
-            if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
+//            if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
                 if (!this.level().isClientSide) {
                     NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
                             ChestMenu.threeRows(containerId, inventory, this.inventory), this.getDisplayName()));
-                }
+//                }
             }
         }
         return super.interact(player, hand);

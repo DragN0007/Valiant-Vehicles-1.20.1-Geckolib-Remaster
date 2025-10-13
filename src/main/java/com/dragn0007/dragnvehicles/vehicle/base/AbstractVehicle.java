@@ -1,8 +1,6 @@
 package com.dragn0007.dragnvehicles.vehicle.base;
 
-import com.dragn0007.dragnvehicles.item.VVItems;
 import com.dragn0007.dragnvehicles.util.VVTags;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
@@ -10,7 +8,6 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -114,10 +111,10 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         if (!this.level().isClientSide) {
         } else {
             if(this.getControllingPassenger() instanceof LocalPlayer player) {
-                if ((this.isLocked() && this.owner.equals(player.getUUID())) || (!this.isLocked())) {
+//                if ((this.isLocked() && this.owner.equals(player.getUUID())) || (!this.isLocked())) {
                     this.handleInput(player.input);
                 }
-            }
+//            }
         }
     }
 
@@ -171,17 +168,17 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         ItemStack stack = player.getItemInHand(hand);
         Item item = stack.getItem();
 
-        if (stack.is(VVItems.CAR_KEY.get()) && player.isShiftKeyDown() && this.getOwner().equals(player.getUUID())) {
-            if (!this.isLocked()) {
-                this.setLocked(true);
-                player.displayClientMessage(Component.translatable("Locked").withStyle(ChatFormatting.GOLD), true);
-            } else {
-                this.setLocked(false);
-                player.displayClientMessage(Component.translatable("Unlocked").withStyle(ChatFormatting.GOLD), true);
-            }
-        }
+//        if (stack.is(VVItems.CAR_KEY.get()) && player.isShiftKeyDown() && this.getOwner().equals(player.getUUID())) {
+//            if (!this.isLocked()) {
+//                this.setLocked(true);
+//                player.displayClientMessage(Component.translatable("Locked").withStyle(ChatFormatting.GOLD), true);
+//            } else {
+//                this.setLocked(false);
+//                player.displayClientMessage(Component.translatable("Unlocked").withStyle(ChatFormatting.GOLD), true);
+//            }
+//        }
 
-        if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
+//        if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
             if (item instanceof DyeItem) {
                 if (isClientSide)
                     return InteractionResult.SUCCESS;
@@ -201,7 +198,7 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
                     return InteractionResult.sidedSuccess(this.level().isClientSide);
                 }
             }
-        }
+//        }
 
         if(player.isSecondaryUseActive()) {
 
@@ -230,9 +227,9 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
                 player.setYRot(getYRot());
                 player.setXRot(getXRot());
 
-                if ((this.getOwner() != null && this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
+//                if ((this.getOwner() != null && this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
                     return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
-                }
+//                }
             }
             return InteractionResult.sidedSuccess(!level().isClientSide);
         }

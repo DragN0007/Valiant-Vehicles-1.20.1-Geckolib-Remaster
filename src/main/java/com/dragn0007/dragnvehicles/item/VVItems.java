@@ -2,6 +2,7 @@ package com.dragn0007.dragnvehicles.item;
 
 import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
 import com.dragn0007.dragnvehicles.VehicleRegistry;
+import com.dragn0007.dragnvehicles.item.custom.CarKeyItem;
 import com.dragn0007.dragnvehicles.item.custom.VehicleItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -46,5 +47,5 @@ public class VVItems {
             () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> CAR_KEY = ITEMS.register("car_key",
-            () -> new Item(new Item.Properties()));
+            () -> new CarKeyItem(new Item.Properties()));
 }
