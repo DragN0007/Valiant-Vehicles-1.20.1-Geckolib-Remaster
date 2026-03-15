@@ -1,5 +1,6 @@
 package com.dragn0007.dragnvehicles.vehicle;
 
+import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
 import com.dragn0007.dragnvehicles.item.VVItems;
 import com.dragn0007.dragnvehicles.util.ValiantVehiclesCommonConfig;
 import com.dragn0007.dragnvehicles.vehicle.base.AbstractInventoryVehicle;
@@ -7,21 +8,25 @@ import com.dragn0007.dragnvehicles.vehicle.base.AbstractVehicle;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 
 public class SUV extends AbstractInventoryVehicle implements ContainerListener {
 
@@ -60,15 +65,62 @@ public class SUV extends AbstractInventoryVehicle implements ContainerListener {
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         Item item = stack.getItem();
-        if(player.isShiftKeyDown() && !(item instanceof DyeItem) && (item != VVItems.CAR_KEY.get())) {
+
+        if (player.isShiftKeyDown()) {
+            if (item instanceof DyeItem) {
+                DyeItem dyeitem = (DyeItem) item;
+                DyeColor dyecolor = dyeitem.getDyeColor();
+                if ((dyecolor != this.getColor()) || this.getVariant() > 0) {
+                    this.setColor(dyecolor);
+                    this.setVariant(0);
+                    if (!player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            } else if (stack.is(Items.BONE)) {
+                this.setVariant(1);
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
+                return InteractionResult.SUCCESS;
+            }
+        } else if (stack.isEmpty() && player.isShiftKeyDown()) {
+//            if ((item != VVItems.CAR_KEY.get())) {
 //            if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
                 if (!this.level().isClientSide) {
                     NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
                             new ChestMenu(MenuType.GENERIC_9x4, containerId, inventory, this.inventory, 4), this.getDisplayName()));
                 }
 //            }
+//            }
         }
+
         return super.interact(player, hand);
+    }
+
+    public enum PaintColor {
+        NONE(new ResourceLocation(ValiantVehiclesMain.MODID, "textures/entity/none.png")),
+        GILCASTER(new ResourceLocation(ValiantVehiclesMain.MODID, "textures/entity/suv/gilcaster.png"));
+
+        public final ResourceLocation resourceLocation;
+        PaintColor(ResourceLocation resourceLocation) {
+            this.resourceLocation = resourceLocation;
+        }
+
+        public static PaintColor variantFromOrdinal(int variant) { return PaintColor.values()[variant % PaintColor.values().length];
+        }
+    }
+
+    public static final EntityDataAccessor<Integer> DATA_PAINT_COLOR = SynchedEntityData.defineId(SUV.class, EntityDataSerializers.INT);
+    public ResourceLocation getTextureLocation() {
+        return PaintColor.variantFromOrdinal(getVariant()).resourceLocation;
+    }
+    public int getVariant() {
+        return this.entityData.get(DATA_PAINT_COLOR);
+    }
+    public void setVariant(int variant) {
+        this.entityData.set(DATA_PAINT_COLOR, variant);
     }
 
     @Override
@@ -102,5 +154,11 @@ public class SUV extends AbstractInventoryVehicle implements ContainerListener {
             }
         }
         compoundTag.put("Items", listTag);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_PAINT_COLOR, 0);
     }
 }

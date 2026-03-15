@@ -12,6 +12,7 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -59,13 +60,29 @@ public class Classic extends AbstractInventoryVehicle implements ContainerListen
     public InteractionResult interact(Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         Item item = stack.getItem();
-        if(player.isShiftKeyDown() && !(item instanceof DyeItem) && (item != VVItems.CAR_KEY.get())) {
-//            if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
-                if (!this.level().isClientSide) {
-                    NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
-                            ChestMenu.threeRows(containerId, inventory, this.inventory), this.getDisplayName()));
-//                }
+
+        if (player.isShiftKeyDown()) {
+            if (item instanceof DyeItem) {
+                DyeItem dyeitem = (DyeItem) item;
+                DyeColor dyecolor = dyeitem.getDyeColor();
+                if ((dyecolor != this.getColor()) || this.getVariant() > 0) {
+                    this.setColor(dyecolor);
+                    this.setVariant(0);
+                    if (!player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
+                    return InteractionResult.SUCCESS;
+                }
             }
+        } else if (stack.isEmpty() && player.isShiftKeyDown()) {
+//            if ((item != VVItems.CAR_KEY.get())) {
+//            if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
+            if (!this.level().isClientSide) {
+                NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
+                        ChestMenu.threeRows(containerId, inventory, this.inventory), this.getDisplayName()));
+            }
+//            }
+//            }
         }
         return super.interact(player, hand);
     }

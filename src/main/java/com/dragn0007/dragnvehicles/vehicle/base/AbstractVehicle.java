@@ -1,5 +1,6 @@
 package com.dragn0007.dragnvehicles.vehicle.base;
 
+import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
 import com.dragn0007.dragnvehicles.util.VVTags;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvents;
@@ -20,8 +22,10 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
@@ -179,25 +183,26 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
 //        }
 
 //        if ((this.isLocked() && this.getOwner().equals(player.getUUID())) || (!this.isLocked())) {
-            if (item instanceof DyeItem) {
-                if (isClientSide)
-                    return InteractionResult.SUCCESS;
-                DyeItem dyeitem = (DyeItem) item;
-                DyeColor dyecolor = dyeitem.getDyeColor();
-                if (dyecolor != this.getColor()) {
-                    this.setColor(dyecolor);
-                    if (!player.getAbilities().instabuild) {
-                        stack.shrink(1);
-                    }
-
-                    return InteractionResult.SUCCESS;
-                }
-
-                if (!player.getAbilities().instabuild) {
-                    stack.shrink(1);
-                    return InteractionResult.sidedSuccess(this.level().isClientSide);
-                }
-            }
+//            if (item instanceof DyeItem) {
+//                if (isClientSide)
+//                    return InteractionResult.SUCCESS;
+//                DyeItem dyeitem = (DyeItem) item;
+//                DyeColor dyecolor = dyeitem.getDyeColor();
+//                if (dyecolor != this.getColor()) {
+//                    this.setColor(dyecolor);
+//                    this.setVariant(0);
+//                    if (!player.getAbilities().instabuild) {
+//                        stack.shrink(1);
+//                    }
+//
+//                    return InteractionResult.SUCCESS;
+//                }
+//
+//                if (!player.getAbilities().instabuild) {
+//                    stack.shrink(1);
+//                    return InteractionResult.sidedSuccess(this.level().isClientSide);
+//                }
+//            }
 //        }
 
         if(player.isSecondaryUseActive()) {
@@ -322,6 +327,10 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
             return true;
         }
 
+        if (source.getEntity() instanceof Arrow) {
+            return false;
+        }
+
         if(level().isClientSide || isRemoved())
             return true;
 
@@ -366,6 +375,14 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         this.entityData.set(DATA_COLOR, p_30398_.getId());
     }
 
+    public static final EntityDataAccessor<Integer> DATA_PAINT_COLOR = SynchedEntityData.defineId(AbstractVehicle.class, EntityDataSerializers.INT);
+    public int getVariant() {
+        return this.entityData.get(DATA_PAINT_COLOR);
+    }
+    public void setVariant(int variant) {
+        this.entityData.set(DATA_PAINT_COLOR, variant);
+    }
+
     public static final EntityDataAccessor<Boolean> LOCKED = SynchedEntityData.defineId(AbstractVehicle.class, EntityDataSerializers.BOOLEAN);
     public boolean isLocked() {
         return this.entityData.get(LOCKED);
@@ -384,6 +401,7 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
 
         tag.put("animals", animals);
         tag.putByte("color", (byte)this.getColor().getId());
+        tag.putInt("paint_color", this.getVariant());
         tag.putBoolean("locked", this.isLocked());
     }
 
@@ -391,6 +409,10 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
     protected void readAdditionalSaveData(CompoundTag tag) {
         if (tag.contains("color", 99)) {
             this.setColor(DyeColor.byId(tag.getInt("color")));
+        }
+
+        if (tag.contains("paint_color")) {
+            setVariant(tag.getInt("paint_color"));
         }
 
         UUID uuid;
@@ -423,6 +445,7 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
         entityData.define(DATA_TYPE, 0);
         entityData.define(DATA_HEALTH, (float)maxHealth);
         this.entityData.define(DATA_COLOR, DyeColor.WHITE.getId());
+        this.entityData.define(DATA_PAINT_COLOR, 0);
         this.entityData.define(DATA_OWNER, Optional.empty());
         this.entityData.define(LOCKED, false);
     }

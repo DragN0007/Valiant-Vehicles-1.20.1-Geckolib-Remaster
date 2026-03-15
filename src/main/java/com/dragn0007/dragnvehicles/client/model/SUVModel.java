@@ -1,6 +1,7 @@
 package com.dragn0007.dragnvehicles.client.model;
 
 import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
+import com.dragn0007.dragnvehicles.vehicle.SUV;
 import com.dragn0007.dragnvehicles.vehicle.base.AbstractVehicle;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.core.animation.AnimationProcessor;
@@ -15,7 +16,11 @@ public class SUVModel<T extends AbstractVehicle> extends DefaultedEntityGeoModel
 
     @Override
     public ResourceLocation getTextureResource(T animatable) {
-        return ValiantVehiclesMain.id("textures/entity/suv/" + animatable.getColor().toString().toLowerCase() + ".png");
+        if (animatable.getVariant() == 0) {
+            return ValiantVehiclesMain.id("textures/entity/suv/" + animatable.getColor().toString().toLowerCase() + ".png");
+        } else {
+            return (((SUV) animatable).getTextureLocation());
+        }
     }
 
     @Override
