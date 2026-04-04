@@ -34,5 +34,7 @@
   "tooltip.dragnvehicles.jade.unlocked.tooltip": "Unlocked",
   "tooltip.dragnvehicles.jade.owner.tooltip": "Owner: ",
   "tooltip.dragnvehicles.jade.no_owner.tooltip": "Null Owner",
-  "tooltip.dragnvehicles.non_functional.tooltip": "This item is not functional yet."
+  "tooltip.dragnvehicles.non_functional.tooltip": "This item is not functional yet.",
+
+    "entity.dragnvehicles.livestock_trailer": "Livestock Trailer"
 }

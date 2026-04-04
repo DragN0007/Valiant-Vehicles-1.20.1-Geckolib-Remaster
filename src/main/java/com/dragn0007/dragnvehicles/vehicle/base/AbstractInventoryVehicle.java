@@ -42,10 +42,10 @@ public abstract class AbstractInventoryVehicle extends AbstractVehicle implement
     public InteractionResult interact(Player player, InteractionHand hand) {
         if(player.isShiftKeyDown()) {
             if(!this.level().isClientSide) {
-                    NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
-                            ChestMenu.threeRows(containerId, inventory, this.inventory), this.getDisplayName()));
-                }
+                NetworkHooks.openScreen((ServerPlayer) player, new SimpleMenuProvider((containerId, inventory, serverPlayer) ->
+                        ChestMenu.threeRows(containerId, inventory, this.inventory), this.getDisplayName()));
             }
+        }
         return super.interact(player, hand);
     }
 

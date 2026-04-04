@@ -1,20 +1,26 @@
 package com.dragn0007.dragnvehicles.client.model;
 
-import com.dragn0007.dragnvehicles.vehicle.Sportcar;
+import com.dragn0007.dragnvehicles.vehicle.base.AbstractVehicle;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class SportcarRenderer<T extends Sportcar> extends GeoEntityRenderer<T> {
+public class VehicleRenderer<T extends AbstractVehicle> extends GeoEntityRenderer<T> {
 
-    public SportcarRenderer(Context renderManager, String id) {
-    super(renderManager, new SportcarModel<>());
+    public VehicleRenderer(Context ctx, ResourceLocation texture) {
+        super(ctx, new StandardVehicleModel<>(texture));
+    }
+
+    public VehicleRenderer(Context ctx, GeoModel<T> model) {
+        super(ctx, model);
     }
 
     @Override

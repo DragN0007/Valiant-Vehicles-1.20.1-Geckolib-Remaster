@@ -1,6 +1,5 @@
 package com.dragn0007.dragnvehicles.vehicle.base;
 
-import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
 import com.dragn0007.dragnvehicles.util.VVTags;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.LocalPlayer;
@@ -12,7 +11,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvents;
@@ -22,7 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
@@ -112,14 +109,11 @@ public abstract class AbstractVehicle extends AbstractGeckolibVehicle {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide) {
-        } else {
-            if(this.getControllingPassenger() instanceof LocalPlayer player) {
-//                if ((this.isLocked() && this.owner.equals(player.getUUID())) || (!this.isLocked())) {
-                    this.handleInput(player.input);
-                }
-//            }
-        }
+        if(!level().isClientSide())
+            return;
+
+        if(getControllingPassenger() instanceof LocalPlayer player)
+            handleInput(player.input);
     }
 
     @Override

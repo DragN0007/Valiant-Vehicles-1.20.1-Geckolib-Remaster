@@ -1,0 +1,48 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"drive": {
+			"loop": true,
+			"animation_length": 0.75,
+			"bones": {
+				"back_wheels": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 1]
+						},
+						"0.375": {
+							"vector": [180, 0, -1]
+						},
+						"0.75": {
+							"vector": [360, 0, 1]
+						}
+					}
+				},
+				"front_wheels": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 1]
+						},
+						"0.375": {
+							"vector": [180, 0, -1]
+						},
+						"0.75": {
+							"vector": [360, 0, 1]
+						}
+					}
+				}
+			}
+		},
+		"animation.model.new": {
+			"loop": true,
+			"bones": {
+				"door": {
+					"rotation": {
+						"vector": [-104.99183, -0.12739, 0.15956]
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}

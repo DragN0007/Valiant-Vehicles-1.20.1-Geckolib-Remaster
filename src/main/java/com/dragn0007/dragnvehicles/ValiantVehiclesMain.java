@@ -2,6 +2,7 @@ package com.dragn0007.dragnvehicles;
 
 import com.dragn0007.dragnvehicles.common.network.VVPackets;
 import com.dragn0007.dragnvehicles.item.VVItems;
+import com.dragn0007.dragnvehicles.menus.MenuRegistry;
 import com.dragn0007.dragnvehicles.util.ValiantVehiclesCommonConfig;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -27,6 +28,7 @@ public class ValiantVehiclesMain
 
         VVItems.ITEMS.register(eventBus);
         VehicleRegistry.ENTITY_TYPES.register(eventBus);
+        MenuRegistry.MENU_TYPES.register(eventBus);
         VVPackets.register();
 
         MinecraftForge.EVENT_BUS.register(this);

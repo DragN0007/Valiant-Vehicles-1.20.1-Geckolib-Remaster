@@ -7,15 +7,15 @@ import software.bernie.geckolib.core.animation.AnimationProcessor;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
-public class SportcarModel<T extends AbstractVehicle> extends DefaultedEntityGeoModel<T> {
+public class StandardVehicleModel<T extends AbstractVehicle> extends DefaultedEntityGeoModel<T> {
 
-    public SportcarModel() {
-        super(new ResourceLocation(ValiantVehiclesMain.MODID, "sportcar"), false);
+    public StandardVehicleModel(ResourceLocation texture) {
+        super(texture, false);
     }
 
     @Override
     public ResourceLocation getTextureResource(T animatable) {
-        return ValiantVehiclesMain.id("textures/entity/sportcar/" + animatable.getColor().toString().toLowerCase() + ".png");
+        return ValiantVehiclesMain.id("textures/entity/pickup/" + animatable.getColor().toString().toLowerCase() + ".png");
     }
 
     @Override

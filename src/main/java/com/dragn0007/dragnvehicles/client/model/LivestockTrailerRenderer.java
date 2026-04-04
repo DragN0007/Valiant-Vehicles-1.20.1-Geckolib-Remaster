@@ -1,20 +1,20 @@
 package com.dragn0007.dragnvehicles.client.model;
 
-import com.dragn0007.dragnvehicles.vehicle.Classic;
+import com.dragn0007.dragnvehicles.vehicle.Trailer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class ClassicRenderer<T extends Classic> extends GeoEntityRenderer<T> {
+public class LivestockTrailerRenderer<T extends Trailer> extends GeoEntityRenderer<T> {
 
-    public ClassicRenderer(Context renderManager, String id) {
-    super(renderManager, new ClassicModel<>());
+    public LivestockTrailerRenderer(Context renderManager) {
+        super(renderManager, new LivestockTrailerModel<>());
     }
 
     @Override
@@ -25,16 +25,15 @@ public class ClassicRenderer<T extends Classic> extends GeoEntityRenderer<T> {
         float pitch = animatable.getXRot(partialTick);
         float yaw = -Mth.rotLerp(partialTick, animatable.yRotO, animatable.getYRot());
 
-        double wLength = animatable.getLength();
-
-        Vec3 mid = new Vec3(0, 0, pitch < 0 ? -wLength : wLength); // Pivot point is different for positive vs negative rotation.
-
         pose.mulPose(Axis.YP.rotationDegrees(yaw));
-        pose.translate(-mid.x, 0, -mid.z);
         pose.mulPose(Axis.XP.rotationDegrees(pitch));
-        pose.translate(mid.x, 0, mid.z);
 
         super.preRender(pose, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+    }
+
+    @Override
+    public boolean shouldRender(T animatable, Frustum camera, double p_114493_, double p_114494_, double p_114495_) {
+        return true;
     }
 
 }
