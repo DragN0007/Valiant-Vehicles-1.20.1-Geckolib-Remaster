@@ -9,12 +9,13 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.util.Mth;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class LivestockTrailerRenderer<T extends Trailer> extends GeoEntityRenderer<T> {
+public class TrailerRenderer<T extends Trailer> extends GeoEntityRenderer<T> {
 
-    public LivestockTrailerRenderer(Context renderManager) {
-        super(renderManager, new LivestockTrailerModel<>());
+    public TrailerRenderer(Context renderManager, GeoModel<T> model) {
+        super(renderManager, model);
     }
 
     @Override

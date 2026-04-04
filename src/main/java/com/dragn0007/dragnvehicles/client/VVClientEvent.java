@@ -25,7 +25,7 @@ public class VVClientEvent {
         EntityRenderers.register(VehicleRegistry.SPORT_CAR.get(), ctx -> new VehicleRenderer<>(ctx, ValiantVehiclesMain.id("sportcar")));
 
         EntityRenderers.register(VehicleRegistry.MOTORCYCLE.get(), ctx -> new VehicleRenderer<>(ctx, new MotorcycleModel<>()));
-        EntityRenderers.register(VehicleRegistry.LIVESTOCK_TRAILER.get(), LivestockTrailerRenderer::new);
+        EntityRenderers.register(VehicleRegistry.LIVESTOCK_TRAILER.get(), ctx -> new TrailerRenderer<>(ctx, new TrailerModel<>("livestock_trailer")));
 
         MenuScreens.register(MenuRegistry.LIVESTOCK_TRAILER.get(), LivestockTrailerScreen::new);
     }

@@ -6,15 +6,18 @@ import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 
-public class LivestockTrailerModel<T extends Trailer> extends DefaultedEntityGeoModel<T> {
+public class TrailerModel<T extends Trailer> extends DefaultedEntityGeoModel<T> {
 
-    public LivestockTrailerModel() {
-        super(new ResourceLocation(ValiantVehiclesMain.MODID, "livestock_trailer"), false);
+    private final String name;
+
+    public TrailerModel(String name) {
+        super(new ResourceLocation(ValiantVehiclesMain.MODID, name), false);
+        this.name = name;
     }
 
     @Override
     public ResourceLocation getTextureResource(T animatable) {
-        return ValiantVehiclesMain.id("textures/entity/livestock_trailer/silver.png");
+        return ValiantVehiclesMain.id("textures/entity/" + name + "/silver.png");
     }
 
     @Override
