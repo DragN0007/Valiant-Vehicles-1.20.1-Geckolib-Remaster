@@ -22,6 +22,11 @@ public class VehicleRegistry {
             new Vec3(0.0D, 1.25D, -3.0D),
     };
 
+    private static final Vec3[] HORSE_RIDERS =  new Vec3[]{
+            new Vec3(0.5D, 1.25D, -2.0D),
+            new Vec3(-0.5D, 1.25D, -2.0D),
+    };
+
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
 
     public static final RegistryObject<EntityType<Car>> CAR = ENTITY_TYPES.register("car",
@@ -44,4 +49,7 @@ public class VehicleRegistry {
 
     public static final RegistryObject<EntityType<Trailer>> LIVESTOCK_TRAILER = ENTITY_TYPES.register("livestock_trailer",
             () -> EntityType.Builder.<Trailer>of((type, level) -> new Trailer(type, level, 5.1D, LIVESTOCK_RIDERS, 9), MobCategory.MISC).sized(2.5f, 2.2f).build(new ResourceLocation(MODID, "livestock_trailer").toString()));
+
+    public static final RegistryObject<EntityType<HorseTrailer>> HORSE_TRAILER = ENTITY_TYPES.register("horse_trailer",
+            () -> EntityType.Builder.<HorseTrailer>of((type, level) -> new HorseTrailer(type, level, 1.3D, HORSE_RIDERS, 9), MobCategory.MISC).sized(2.5f, 2.2f).build(new ResourceLocation(MODID, "horse_trailer").toString()));
 }

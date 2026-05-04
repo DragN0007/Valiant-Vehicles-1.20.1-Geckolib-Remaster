@@ -18,14 +18,15 @@ public class VVClientEvent {
 
     @SubscribeEvent
     public static void clientSetupEvent(FMLClientSetupEvent event) {
-        EntityRenderers.register(VehicleRegistry.CAR.get(), ctx -> new VehicleRenderer<>(ctx, ValiantVehiclesMain.id("car")));
-        EntityRenderers.register(VehicleRegistry.CLASSIC.get(), ctx -> new VehicleRenderer<>(ctx, ValiantVehiclesMain.id("classic")));
-        EntityRenderers.register(VehicleRegistry.TRUCK.get(), ctx -> new VehicleRenderer<>(ctx, ValiantVehiclesMain.id("pickup")));
-        EntityRenderers.register(VehicleRegistry.SUV.get(), ctx -> new VehicleRenderer<>(ctx, ValiantVehiclesMain.id("suv")));
-        EntityRenderers.register(VehicleRegistry.SPORT_CAR.get(), ctx -> new VehicleRenderer<>(ctx, ValiantVehiclesMain.id("sportcar")));
+        EntityRenderers.register(VehicleRegistry.CAR.get(), c -> new CarRenderer<>(c, "car"));
+        EntityRenderers.register(VehicleRegistry.CLASSIC.get(), c -> new ClassicRenderer<>(c, "classic"));
+        EntityRenderers.register(VehicleRegistry.TRUCK.get(), c -> new PickupRenderer<>(c, "pickup"));
+        EntityRenderers.register(VehicleRegistry.SUV.get(), c -> new SUVRenderer<>(c, "suv"));
+        EntityRenderers.register(VehicleRegistry.SPORT_CAR.get(), c -> new SportcarRenderer<>(c, "sportcar"));
+        EntityRenderers.register(VehicleRegistry.MOTORCYCLE.get(), c -> new MotorcycleRenderer<>(c, "motorcycle"));
 
-        EntityRenderers.register(VehicleRegistry.MOTORCYCLE.get(), ctx -> new VehicleRenderer<>(ctx, new MotorcycleModel<>()));
         EntityRenderers.register(VehicleRegistry.LIVESTOCK_TRAILER.get(), ctx -> new TrailerRenderer<>(ctx, new TrailerModel<>("livestock_trailer")));
+        EntityRenderers.register(VehicleRegistry.HORSE_TRAILER.get(), ctx -> new TrailerRenderer<>(ctx, new TrailerModel<>("horse_trailer")));
 
         MenuScreens.register(MenuRegistry.LIVESTOCK_TRAILER.get(), LivestockTrailerScreen::new);
     }

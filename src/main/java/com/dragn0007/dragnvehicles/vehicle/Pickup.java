@@ -17,7 +17,6 @@ import net.minecraft.world.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -26,7 +25,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 
-public class Pickup extends AbstractInventoryVehicle implements ContainerListener {
+public class Pickup extends AbstractInventoryVehicle implements ContainerListener, Hitchable, TruckHitchable {
 
     public static final Vec3[] RIDERS = new Vec3[] {
             new Vec3(0.5D, 0.65D, 0.2D),
@@ -93,6 +92,11 @@ public class Pickup extends AbstractInventoryVehicle implements ContainerListene
         }
 
         return super.interact(player, hand);
+    }
+
+    @Override
+    public Vec3 getHitchPoint() {
+        return new Vec3(0, 0, -2.50D);
     }
 
     public enum PaintColor {

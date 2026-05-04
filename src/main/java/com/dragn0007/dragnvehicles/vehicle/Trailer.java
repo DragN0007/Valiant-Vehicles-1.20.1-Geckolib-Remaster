@@ -1,24 +1,39 @@
 package com.dragn0007.dragnvehicles.vehicle;
 
+import com.dragn0007.dragnvehicles.item.VVItems;
 import com.dragn0007.dragnvehicles.menus.LivestockTrailerMenu;
+import com.dragn0007.dragnvehicles.util.VVTags;
 import com.dragn0007.dragnvehicles.vehicle.base.AbstractVehicle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
@@ -32,15 +47,24 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
+
+import java.util.Random;
 
 public class Trailer extends Entity implements GeoEntity, MenuProvider {
 
+    protected static final EntityDataAccessor<Float> DATA_HEALTH = SynchedEntityData.defineId(Trailer.class, EntityDataSerializers.FLOAT);
+    protected static final Random RANDOM = new Random();
+    protected static final RawAnimation ANIM_MOVE = RawAnimation.begin().thenLoop("move.forwards");
     protected final AnimatableInstanceCache animCache = GeckoLibUtil.createInstanceCache(this);
 
     private Hitchable vehicle;
     private final double length;
     private final Vec3[] riders;
+    protected int maxHealth;
 
     private final NonNullList<ItemStack> inventory;
     private final ItemStackHandler itemHandler;
@@ -60,10 +84,20 @@ public class Trailer extends Entity implements GeoEntity, MenuProvider {
         this.inventory = NonNullList.withSize(capacity, ItemStack.EMPTY);
         this.itemHandler = new ItemStackHandler(inventory);
         this.optionalItemHandler = LazyOptional.of(() -> itemHandler);
+        this.maxHealth = 120;
+    }
+
+    @Nullable
+    @Override
+    public ItemStack getPickResult() {
+        return VVItems.LIVESTOCK_TRAILER_SPAWN_EGG.get().getDefaultInstance();
     }
 
     @Override
     public InteractionResult interact(Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        Item item = stack.getItem();
+
         if(!player.level().isClientSide && vehicle == null) {
             Hitchable vehicle = level().getEntitiesOfClass(AbstractVehicle.class, this.getBoundingBox().inflate(10)).stream()
                     .filter(v -> v instanceof Hitchable)
@@ -74,6 +108,20 @@ public class Trailer extends Entity implements GeoEntity, MenuProvider {
                 return super.interact(player, hand);
 
             this.vehicle = vehicle;
+        }
+
+        if (player.isShiftKeyDown()) {
+            if (item instanceof DyeItem) {
+                DyeItem dyeitem = (DyeItem) item;
+                DyeColor dyecolor = dyeitem.getDyeColor();
+                if ((dyecolor != this.getColor() && (dyecolor == DyeColor.BLACK || dyecolor == DyeColor.GRAY || dyecolor == DyeColor.WHITE))) {
+                    this.setColor(dyecolor);
+                    if (!player.getAbilities().instabuild) {
+                        stack.shrink(1);
+                    }
+                    return InteractionResult.SUCCESS;
+                }
+            }
         }
 
         if(tryMountMob(player))
@@ -88,9 +136,76 @@ public class Trailer extends Entity implements GeoEntity, MenuProvider {
     }
 
     @Override
+    public boolean hurt(DamageSource source, float amount) {
+        if (source.getEntity() instanceof Player player && player.isSecondaryUseActive()) {
+            if (this.vehicle != null) {
+                this.vehicle = null;
+            }
+            return false;
+        }
+
+        if (this.isInvulnerableTo(source)) {
+            return false;
+        } else if (!this.level().isClientSide && !this.isRemoved()) {
+            level().playSound(null, blockPosition(), SoundEvents.WOOD_BREAK, SoundSource.MASTER);
+            double w = getBbWidth();
+            double h = getBbHeight();
+            ((ServerLevel)level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.SPRUCE_PLANKS.defaultBlockState()),
+                    getX(), getY(), getZ(), 100, w, h, w, 0);
+            this.setHealth(this.getHealth() - amount);
+            this.markHurt();
+            this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
+
+            if (source.getEntity() instanceof Player player) {
+                if (getHealth() <= 0) {
+                    onDestroyed(true);
+                }
+            }
+
+            return true;
+        }
+
+        if (source.getEntity() instanceof Arrow) {
+            return false;
+        }
+
+        if(level().isClientSide || isRemoved())
+            return true;
+
+        return super.hurt(source, amount);
+    }
+
+    protected void onDestroyed(boolean dropItem) {
+        if(level().isClientSide)
+            return;
+
+        ejectPassengers();
+        discard();
+
+        if(!level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS))
+            return;
+
+        if(dropItem) {
+            ItemStack pickResult = getPickResult();
+            if(pickResult != null)
+                spawnAtLocation(pickResult);
+        } else {
+            spawnAtLocation(new ItemStack(Items.IRON_INGOT, RANDOM.nextInt(10)));
+            spawnAtLocation(new ItemStack(Items.GLASS, RANDOM.nextInt(3)));
+        }
+    }
+
+    @Override
     public void tick() {
         super.tick();
         tickLerp();
+
+        if (!this.level().isClientSide) {
+            for (Entity passenger : this.getPassengers()) {
+                passenger.setYRot(this.getYRot());
+                passenger.setYHeadRot(this.getYRot());
+            }
+        }
 
         if(level().isClientSide() || vehicle == null)
             return;
@@ -133,14 +248,16 @@ public class Trailer extends Entity implements GeoEntity, MenuProvider {
         }
     }
 
-    private boolean tryMountMob(Player player) {
+    boolean tryMountMob(Player player) {
         Mob mob = level().getEntitiesOfClass(Mob.class, new AABB(
                         player.getX()-7, player.getY()-7, player.getZ()-7,
                         player.getX()+7, player.getY()+7, player.getZ()+7
-                ), h -> h.getLeashHolder() == player).stream()
-                .findFirst().orElse(null);
+                ), h -> h.getLeashHolder() == player
+        ).stream().findFirst().orElse(null);
 
-        if(mob != null && !level().isClientSide && canAddPassenger(mob))
+        if(mob != null
+//                && !level().isClientSide
+                && canAddPassenger(mob))
             mob.startRiding(this);
 
         return mob != null;
@@ -251,21 +368,43 @@ public class Trailer extends Entity implements GeoEntity, MenuProvider {
         return true;
     }
 
-    @Override
-    protected void defineSynchedData() {}
+    public static final EntityDataAccessor<Integer> DATA_COLOR = SynchedEntityData.defineId(Trailer.class, EntityDataSerializers.INT);
+    public DyeColor getColor() {
+        return DyeColor.byId(this.entityData.get(DATA_COLOR));
+    }
+    public void setColor(DyeColor p_30398_) {
+        this.entityData.set(DATA_COLOR, p_30398_.getId());
+    }
 
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         ContainerHelper.saveAllItems(nbt, inventory, false);
+        nbt.putByte("color", (byte)this.getColor().getId());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         ContainerHelper.loadAllItems(nbt, inventory);
+        if (nbt.contains("color", 99)) {
+            this.setColor(DyeColor.byId(nbt.getInt("color")));
+        }
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        this.entityData.define(DATA_COLOR, DyeColor.GRAY.getId());
+        entityData.define(DATA_HEALTH, (float)maxHealth);
     }
 
     public ItemStackHandler getItems() {
         return itemHandler;
+    }
+
+    public float getHealth() {
+        return entityData.get(DATA_HEALTH);
+    }
+    protected void setHealth(float health) {
+        entityData.set(DATA_HEALTH, Mth.clamp(health, 0, maxHealth));
     }
 
     @Override
@@ -274,7 +413,13 @@ public class Trailer extends Entity implements GeoEntity, MenuProvider {
     }
 
     @Override
-    public void registerControllers(ControllerRegistrar registrar) {}
+    public void registerControllers(ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, vehicle -> {
+            if(getDeltaMovement().horizontalDistance() > 0.01F)
+                return vehicle.setAndContinue(ANIM_MOVE);
+            return PlayState.STOP;
+        }));
+    }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
@@ -285,9 +430,4 @@ public class Trailer extends Entity implements GeoEntity, MenuProvider {
     public @Nullable AbstractContainerMenu createMenu(int id, Inventory inventory, Player player) {
         return new LivestockTrailerMenu(id, inventory, this);
     }
-
-
-
-
-
 }

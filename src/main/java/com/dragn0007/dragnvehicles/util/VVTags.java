@@ -11,6 +11,7 @@ public class VVTags {
 
     public static class Entity_Types {
         public static final TagKey<EntityType<?>> CANNOT_RIDE_VEHICLE = tag("cannot_ride_vehicle");
+        public static final TagKey<EntityType<?>> HORSES = tag("horses");
 
         public static TagKey<EntityType<?>> forgeTag(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name));

@@ -17,7 +17,7 @@ public class TrailerModel<T extends Trailer> extends DefaultedEntityGeoModel<T> 
 
     @Override
     public ResourceLocation getTextureResource(T animatable) {
-        return ValiantVehiclesMain.id("textures/entity/" + name + "/silver.png");
+        return ValiantVehiclesMain.id("textures/entity/" + name + "/" + animatable.getColor() + ".png");
     }
 
     @Override

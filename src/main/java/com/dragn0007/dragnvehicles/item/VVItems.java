@@ -3,6 +3,7 @@ package com.dragn0007.dragnvehicles.item;
 import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
 import com.dragn0007.dragnvehicles.VehicleRegistry;
 import com.dragn0007.dragnvehicles.item.custom.CarKeyItem;
+import com.dragn0007.dragnvehicles.item.custom.TrailerItem;
 import com.dragn0007.dragnvehicles.item.custom.VehicleItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -24,6 +25,10 @@ public class VVItems {
             () -> new VehicleItem(VehicleRegistry.SPORT_CAR::get, new Item.Properties().stacksTo(1)));
     public static final RegistryObject<Item> MOTORCYCLE_SPAWN_EGG = ITEMS.register("motorcycle",
             () -> new VehicleItem(VehicleRegistry.MOTORCYCLE::get, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> LIVESTOCK_TRAILER_SPAWN_EGG = ITEMS.register("livestock_trailer",
+            () -> new TrailerItem(VehicleRegistry.LIVESTOCK_TRAILER::get, new Item.Properties().stacksTo(1)));
+    public static final RegistryObject<Item> HORSE_TRAILER_SPAWN_EGG = ITEMS.register("horse_trailer",
+            () -> new TrailerItem(VehicleRegistry.HORSE_TRAILER::get, new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> CAR_BODY = ITEMS.register("car_body",
             () -> new Item(new Item.Properties()));

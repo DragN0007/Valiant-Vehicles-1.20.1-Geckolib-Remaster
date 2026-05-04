@@ -13,6 +13,4 @@ public class MenuRegistry {
     public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(ForgeRegistries.MENU_TYPES, MODID);
 
     public static final RegistryObject<MenuType<LivestockTrailerMenu>> LIVESTOCK_TRAILER = MENU_TYPES.register("livestock_trailer", () -> IForgeMenuType.create(LivestockTrailerMenu::new));
-
-
 }

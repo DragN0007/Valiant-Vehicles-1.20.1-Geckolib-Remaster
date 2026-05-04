@@ -1,10 +1,12 @@
-// 1.20.1	2025-10-07T15:53:07.6749793	Recipes
+// 1.20.1	2026-04-05T02:19:41.8563995	Recipes
 d2785ee0357797049e4cd07012037ae80802a656 data/dragnvehicles/advancements/recipes/misc/car.json
 2f206356008a24da718b7c4ff8ba23caa9180ee8 data/dragnvehicles/advancements/recipes/misc/car_body.json
 91efdc71b31009476545db419972a27e47899822 data/dragnvehicles/advancements/recipes/misc/car_key.json
 0ac7ec0cf264e3ecdfc56a0e57381093a083841c data/dragnvehicles/advancements/recipes/misc/classic.json
 52163c9bfe0f168586a6551fb3c7e600e955491a data/dragnvehicles/advancements/recipes/misc/classic_body.json
 af6fe14b7b50bba0af0aa7c89139786f71f23813 data/dragnvehicles/advancements/recipes/misc/engine.json
+c886ac869a96a81c78fdefd5acd07514fcc6e37e data/dragnvehicles/advancements/recipes/misc/horse_trailer.json
+5773027fd42a018a718673f75f998823f5a7870f data/dragnvehicles/advancements/recipes/misc/livestock_trailer.json
 5aa62004f01ff66c46dc47175f89672bf17f057e data/dragnvehicles/advancements/recipes/misc/motorcycle.json
 a52500edd0f3dacc7a4fe9950ab9417fa5e16f40 data/dragnvehicles/advancements/recipes/misc/motorcycle_body.json
 918af7d6ffb245674029cf8f2a784d9e23f44ecd data/dragnvehicles/advancements/recipes/misc/sports_engine.json
@@ -22,6 +24,8 @@ fe29aa9b3a7009d000c36af8da346129a9811bb6 data/dragnvehicles/advancements/recipes
 87781746a4f34b3fa7e8dfbee76a84066e2224e2 data/dragnvehicles/recipes/classic.json
 2fb334edf969c8a75050a7b20bb154e53a1617a9 data/dragnvehicles/recipes/classic_body.json
 96c9dd22c48840ab5a56747f160a3300524c4d3d data/dragnvehicles/recipes/engine.json
+ea049cc906286de18c025f28c573d23ce1d73698 data/dragnvehicles/recipes/horse_trailer.json
+bacac5c951b708d9f0b944c691ea2142a70b02d5 data/dragnvehicles/recipes/livestock_trailer.json
 064c02b90e77da0e3fc013da5f6e4b30bddf4772 data/dragnvehicles/recipes/motorcycle.json
 46d82a400637c8d710ce61dd945e81d9d707cc07 data/dragnvehicles/recipes/motorcycle_body.json
 9bb237b981e566a9cfedc6508a8c82c4db102924 data/dragnvehicles/recipes/sports_engine.json

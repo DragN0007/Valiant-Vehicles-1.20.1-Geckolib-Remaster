@@ -20,6 +20,26 @@ public class VVRecipeMaker extends RecipeProvider implements IConditionBuilder {
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.LIVESTOCK_TRAILER_SPAWN_EGG.get())
+                .define('A', Items.IRON_INGOT)
+                .define('B', Items.IRON_BLOCK)
+                .define('C', VVItems.WHEEL.get())
+                .pattern("BAA")
+                .pattern("BCC")
+                .unlockedBy("has_iron", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.IRON_INGOT).build()))
+                .save(pFinishedRecipeConsumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.HORSE_TRAILER_SPAWN_EGG.get())
+                .define('A', Items.IRON_INGOT)
+                .define('B', Items.IRON_BLOCK)
+                .define('C', VVItems.WHEEL.get())
+                .pattern("AAB")
+                .pattern(" CC")
+                .unlockedBy("has_iron", inventoryTrigger(ItemPredicate.Builder.item()
+                        .of(Items.IRON_INGOT).build()))
+                .save(pFinishedRecipeConsumer);
+
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, VVItems.CAR_SPAWN_EGG.get())
                 .define('A', VVItems.CAR_BODY.get())
