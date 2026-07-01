@@ -6,6 +6,7 @@ public class ValiantVehiclesCommonConfig {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec SPEC;
 
+    public static final ForgeConfigSpec.ConfigValue<Integer> FUEL_BURN_TIME;
     public static final ForgeConfigSpec.ConfigValue<Double> CAR_SPEED_MULT;
     public static final ForgeConfigSpec.ConfigValue<Double> CAR_SPEED_ACC;
     public static final ForgeConfigSpec.ConfigValue<Float> CAR_SPEED_TURN;
@@ -32,6 +33,9 @@ public class ValiantVehiclesCommonConfig {
     public static final ForgeConfigSpec.ConfigValue<Integer> MOTORCYCLE_HEALTH;
 
     static {
+        BUILDER.push("Fuel");
+        FUEL_BURN_TIME = BUILDER.define("Fuel Burn Time Ticks", 6000);
+        BUILDER.pop();
 
         BUILDER.push("Car");
         CAR_SPEED_MULT = BUILDER.define("Modern Car Speed Multiplier", 0.7D);

@@ -3,6 +3,7 @@ package com.dragn0007.dragnvehicles;
 import com.dragn0007.dragnvehicles.common.network.VVPackets;
 import com.dragn0007.dragnvehicles.item.VVItems;
 import com.dragn0007.dragnvehicles.menus.MenuRegistry;
+import com.dragn0007.dragnvehicles.util.ValiantVehiclesClientConfig;
 import com.dragn0007.dragnvehicles.util.ValiantVehiclesCommonConfig;
 import com.mojang.logging.LogUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -33,6 +34,7 @@ public class ValiantVehiclesMain
 
         MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ValiantVehiclesCommonConfig.SPEC, "valiant-vehicles-common.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ValiantVehiclesClientConfig.SPEC, "valiant-vehicles-client.toml");
     }
 
     public static ResourceLocation id(String path) {

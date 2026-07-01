@@ -2,7 +2,6 @@ package com.dragn0007.dragnvehicles.vehicle;
 
 import com.dragn0007.dragnvehicles.item.VVItems;
 import com.dragn0007.dragnvehicles.menus.LivestockTrailerMenu;
-import com.dragn0007.dragnvehicles.util.VVTags;
 import com.dragn0007.dragnvehicles.vehicle.base.AbstractVehicle;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

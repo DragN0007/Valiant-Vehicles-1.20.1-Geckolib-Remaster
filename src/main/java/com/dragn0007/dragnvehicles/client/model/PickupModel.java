@@ -2,7 +2,6 @@ package com.dragn0007.dragnvehicles.client.model;
 
 import com.dragn0007.dragnvehicles.ValiantVehiclesMain;
 import com.dragn0007.dragnvehicles.vehicle.Pickup;
-import com.dragn0007.dragnvehicles.vehicle.SUV;
 import com.dragn0007.dragnvehicles.vehicle.base.AbstractVehicle;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.core.animation.AnimationProcessor;

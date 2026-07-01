@@ -1,5 +1,7 @@
 package com.dragn0007.dragnvehicles.vehicle.base;
 
+import com.dragn0007.dragnvehicles.util.VVTags;
+import com.dragn0007.dragnvehicles.util.ValiantVehiclesCommonConfig;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -47,6 +49,40 @@ public abstract class AbstractInventoryVehicle extends AbstractVehicle implement
             }
         }
         return super.interact(player, hand);
+    }
+
+    public boolean hasFuel() {
+        return this.inventory != null && this.getFuelStack() != null && !this.getFuelStack().isEmpty() && this.getFuelStack().is(VVTags.Items.FUEL);
+    }
+
+    public int fuelBurnTime = 0;
+
+    public ItemStack getFuelStack() {
+        if (this.inventory != null) {
+            return this.inventory.getItem(0);
+        }
+        return null;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.hasFuel()) {
+            fuelBurnTime++;
+            if (fuelBurnTime >= ValiantVehiclesCommonConfig.FUEL_BURN_TIME.get()) {
+                this.getFuelStack().shrink(1);
+            }
+        }
+    }
+
+    @Override
+    public void tickRidden() {
+        super.tickRidden();
+        if (!this.hasFuel()) {
+            this.setDeltaMovement(0.0, 0.0, 0.0);
+            this.speed = 0;
+            this.forwardImpulse = 0;
+        }
     }
 
     @NotNull
